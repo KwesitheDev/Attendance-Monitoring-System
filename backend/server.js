@@ -23,7 +23,11 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: '*', // Allow all origins for testing; replace with frontend URLs later
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json());
 app.use(rateLimit); // Apply rate limiting to all routes
 
