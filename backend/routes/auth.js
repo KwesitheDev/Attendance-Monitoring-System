@@ -1,13 +1,15 @@
 /**
  * Directory: backend/routes/
- * Description: Routes for authentication (login, register) and fetching departments for signup dropdown.
+ * Description: Authentication routes using authController.
  */
 const express = require('express');
 const router = express.Router();
-const { getDepartments, register, login } = require('../controllers/authController');
+const authController = require('../controllers/authController');
+const protect = require('../middleware/auth');
 
-router.get('/departments', getDepartments);
-router.post('/register', register);
-router.post('/login', login);
+router.get('/departments', authController.getDepartments);
+router.post('/register', authController.register);
+router.post('/login', authController.login);
+router.get('/user', protect(), authController.getUser);
 
 module.exports = router;
