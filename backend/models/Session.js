@@ -1,17 +1,15 @@
 /**
  * Directory: backend/models/
- * Description: Defines the Session schema for lecture sessions, including a unique sessionId,
- * course, lecturer, date, and expiration for QR codes.
+ * Description: Session model for QR code generation and class sessions.
  */
 const mongoose = require('mongoose');
 
 const sessionSchema = new mongoose.Schema({
-    sessionId: { type: String, required: true, unique: true },
     course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true },
     lecturer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    date: { type: Date, required: true },
-    expiresAt: { type: Date, required: true },
+    qrCode: { type: String, required: true }, // Stores QR code data (e.g., JSON string)
     createdAt: { type: Date, default: Date.now },
+    expiresAt: { type: Date, required: true }, // QR code expiration
 });
 
 module.exports = mongoose.model('Session', sessionSchema);

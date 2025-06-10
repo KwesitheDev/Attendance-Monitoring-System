@@ -1,71 +1,134 @@
 /**
  * Directory: backend/controllers/
- * Description: Handles lecturer actions: creating courses (pending approval), generating QR codes for sessions,
- * and viewing course students.
+ * Description: Lecturer-specific actions: course creation, QR code generation, enrollment keys, attendance.
  */
+const bcrypt = require('bcryptjs');
 const Course = require('../models/Course');
+const Department = require('../models/Department');
 const Session = require('../models/Session');
-const QRCode = require('qrcode');
-const { v4: uuidv4 } = require('uuid');
+const Attendance = require('../models/Attendance');
+const User = require('../models/User');
 
 const createCourse = async (req, res, next) => {
-    const { name, code, department, year, enrollmentPassword } = req.body;
+    const { name, code, department, year } = req.body;
     try {
-        let course = await Course.findOne({ code });
-        if (course) return res.status(400).json({ message: 'Course already exists' });
+        const dept = await Department.findById(department);
+        if (!dept) return res.status(400).json({ message: 'Invalid department' });
 
-        const deptExists = await Department.findById(department);
-        if (!deptExists) return res.status(400).json({ message: 'Invalid department' });
-
-        if (![1, 2, 3, 4].includes(year)) return res.status(400).json({ message: 'Invalid year' });
-
-        course = new Course({ name, code, department, year, lecturer: req.user.id, enrollmentPassword });
+        const course = new Course({
+            name,
+            code,
+            department,
+            year,
+            lecturer: req.user.id, // Auto-assign lecturer
+        });
         await course.save();
-        res.json({ message: 'Course created (pending approval)', course });
+        res.status(201).json(course);
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getMyCourses = async (req, res, next) => {
+    try {
+        const courses = await Course.find({ lecturer: req.user.id }).populate('department');
+        res.json(courses);
     } catch (error) {
         next(error);
     }
 };
 
 const generateQRCode = async (req, res, next) => {
-    const { courseId, sessionDate } = req.body;
-    const sessionId = uuidv4();
-    const qrData = JSON.stringify({ sessionId, courseId, timestamp: Date.now() });
-
+    const { courseId } = req.body;
     try {
-        const course = await Course.findById(courseId);
-        if (!course) return res.status(404).json({ message: 'Course not found' });
-        if (course.lecturer.toString() !== req.user.id) {
-            return res.status(403).json({ message: 'Not authorized' });
-        }
+        const course = await Course.findOne({ _id: courseId, lecturer: req.user.id });
+        if (!course) return res.status(400).json({ message: 'Course not found or unauthorized' });
 
-        const qrCodeUrl = await QRCode.toDataURL(qrData);
-        const session = await Session.create({
-            sessionId,
+        const sessionId = new mongoose.Types.ObjectId();
+        const qrData = JSON.stringify({ sessionId, courseId });
+        const session = new Session({
             course: courseId,
             lecturer: req.user.id,
-            date: sessionDate,
-            expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5-minute expiration
+            qrCode: qrData,
+            expiresAt: new Date(Date.now() + 15 * 60 * 1000), // 15 min expiry
         });
-
-        res.json({ qrCodeUrl, session });
+        await session.save();
+        res.json({ qrCode: qrData, sessionId });
     } catch (error) {
         next(error);
     }
 };
 
-const getCourseStudents = async (req, res, next) => {
-    const { courseId } = req.params;
+const setEnrollmentKey = async (req, res, next) => {
+    const { courseId, enrollmentPassword } = req.body;
     try {
-        const course = await Course.findById(courseId).populate('students', 'name email');
-        if (!course) return res.status(404).json({ message: 'Course not found' });
-        if (course.lecturer.toString() !== req.user.id) {
-            return res.status(403).json({ message: 'Not authorized' });
-        }
-        res.json(course.students);
+        const course = await Course.findOne({ _id: courseId, lecturer: req.user.id });
+        if (!course) return res.status(400).json({ message: 'Course not found or unauthorized' });
+
+        const salt = await bcrypt.genSalt(10);
+        course.enrollmentPassword = await bcrypt.hash(enrollmentPassword, salt);
+        await course.save();
+        res.json({ message: 'Enrollment key set' });
     } catch (error) {
         next(error);
     }
 };
 
-module.exports = { createCourse, generateQRCode, getCourseStudents };
+const getAttendanceList = async (req, res, next) => {
+    const { courseId, minPercentage, sortBy, search } = req.query;
+    try {
+        const course = await Course.findOne({ _id: courseId, lecturer: req.user.id }).populate('students');
+        if (!course) return res.status(400).json({ message: 'Course not found or unauthorized' });
+
+        const totalSessions = await Session.countDocuments({ course: courseId });
+        const attendanceRecords = await Attendance.aggregate([
+            { $match: { course: new mongoose.Types.ObjectId(courseId) } },
+            {
+                $group: {
+                    _id: '$student',
+                    attendedSessions: { $sum: 1 },
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'student',
+                },
+            },
+            { $unwind: '$student' },
+            {
+                $project: {
+                    studentId: '$_id',
+                    name: '$student.name',
+                    attendedSessions: 1,
+                    totalSessions: { $literal: totalSessions },
+                    attendancePercentage: {
+                        $multiply: [{ $divide: ['$attendedSessions', { $max: [totalSessions, 1] }] }, 100],
+                    },
+                },
+            },
+            search ? { $match: { name: { $regex: search, $options: 'i' } } } : {},
+            minPercentage ? { $match: { attendancePercentage: { $gte: parseFloat(minPercentage) } } } : {},
+            {
+                $sort: sortBy === 'name' ? { name: 1 } : { attendancePercentage: -1 },
+            },
+        ]);
+
+        res.json({
+            totalSessions,
+            students: attendanceRecords.map(record => ({
+                studentId: record.studentId,
+                name: record.name,
+                attendedSessions: record.attendedSessions,
+                totalSessions: record.totalSessions,
+                attendancePercentage: record.attendancePercentage.toFixed(2),
+            })),
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { createCourse, getMyCourses, generateQRCode, setEnrollmentKey, getAttendanceList };
