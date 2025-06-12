@@ -1,15 +1,11 @@
-/**
- * Directory: backend/routes/
- * Description: Authentication routes using authController.
- */
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController');
-const protect = require('../middleware/auth');
+const { register, login, getUser, getDepartments } = require('../controllers/auth');
+const { protect } = require('../middlewares/auth');
 
-router.get('/departments', authController.getDepartments);
-router.post('/register', authController.register);
-router.post('/login', authController.login);
-router.get('/user', protect(), authController.getUser);
+router.post('/register', protect(['admin']), register);
+router.post('/login', login);
+router.get('/user', protect(['admin', 'lecturer', 'student']), getUser);
+router.get('/departments', protect(['admin', 'lecturer', 'student']), getDepartments);
 
 module.exports = router;
