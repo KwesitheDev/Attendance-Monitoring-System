@@ -8,59 +8,53 @@ dotenv.config();
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-    .then(() => console.log('MongoDB connected for seeding'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    useUnifiedTopology: true,
+}).then(() => console.log('MongoDB connected for seeding'))
+    .catch(err => console.log(err));
 
 const seed = async () => {
     try {
-        await User.deleteMany({});
-        await Department.deleteMany({});
+        await User.deleteMany();
+        await Department.deleteMany();
 
-        const compSci = new Department({
+        const department = new Department({
             name: 'Computer Science',
             code: 'CS'
         });
-        await compSci.save();
+        await department.save();
 
-        const hashedPassword = await bcrypt.hash('admin123', 10);
-        const admin = new User({
-            name: 'Admin User',
-            code: 'ADM001',
-            email: 'admin@example.com',
-            password: hashedPassword,
-            role: 'admin',
-            department: compSci._id
-        });
-        await admin.save();
+        const users = [
+            {
+                name: 'Admin User',
+                code: 'ADM001',
+                email: 'admin@example.com',
+                password: await bcrypt.hash('admin123', 10),
+                role: 'admin',
+                department: department._id
+            },
+            {
+                name: 'Lecturer User',
+                code: 'LEC001',
+                email: 'lecturer@example.com',
+                password: await bcrypt.hash('lecturer123', 10),
+                role: 'lecturer',
+                department: department._id
+            },
+            {
+                name: 'Student User',
+                code: 'STU001',
+                email: 'student@example.com',
+                password: await bcrypt.hash('student123', 10),
+                role: 'student',
+                department: department._id
+            }
+        ];
 
-        const lecturerHashedPassword = await bcrypt.hash('lecturer123', 10);
-        const lecturer = new User({
-            name: 'Lecturer User',
-            code: 'LEC001',
-            email: 'lecturer@example.com',
-            password: lecturerHashedPassword,
-            role: 'lecturer',
-            department: compSci._id
-        });
-        await lecturer.save();
-
-        const studentHashedPassword = await bcrypt.hash('student123', 10);
-        const student = new User({
-            name: 'Student User',
-            code: 'STU001',
-            email: 'student@example.com',
-            password: studentHashedPassword,
-            role: 'student',
-            department: compSci._id
-        });
-        await student.save();
-
+        await User.insertMany(users);
         console.log('Database seeded successfully');
         mongoose.connection.close();
-    } catch (error) {
-        console.error('Error seeding database:', error);
+    } catch (err) {
+        console.error(err);
         mongoose.connection.close();
     }
 };

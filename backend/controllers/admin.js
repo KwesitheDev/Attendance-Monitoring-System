@@ -1,17 +1,18 @@
 const User = require('../models/User');
 const Course = require('../models/Course');
 const AuditLog = require('../models/AuditLog');
+const Department = require('../models/Department');
 
-exports.getUsers = async (req, res) => {
+const getUsers = async (req, res) => {
     try {
-        const users = await User.find().populate('department');
+        const users = await User.find().populate('department', 'name code');
         res.json(users);
     } catch (err) {
         res.status(500).json({ message: 'Server error' });
     }
 };
 
-exports.createDepartment = async (req, res) => {
+const createDepartment = async (req, res) => {
     const { name, code } = req.body;
     try {
         const department = new Department({ name, code });
@@ -27,7 +28,7 @@ exports.createDepartment = async (req, res) => {
     }
 };
 
-exports.deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.userId);
         if (!user) return res.status(404).json({ message: 'User not found' });
@@ -42,7 +43,7 @@ exports.deleteUser = async (req, res) => {
     }
 };
 
-exports.getCourses = async (req, res) => {
+const getCourses = async (req, res) => {
     try {
         const courses = await Course.find().populate('department lecturer');
         res.json(courses);
@@ -51,7 +52,7 @@ exports.getCourses = async (req, res) => {
     }
 };
 
-exports.assignLecturer = async (req, res) => {
+const assignLecturer = async (req, res) => {
     const { lecturerId } = req.body;
     try {
         const course = await Course.findById(req.params.courseId);
@@ -73,7 +74,7 @@ exports.assignLecturer = async (req, res) => {
     }
 };
 
-exports.deleteCourse = async (req, res) => {
+const deleteCourse = async (req, res) => {
     try {
         const course = await Course.findByIdAndDelete(req.params.courseId);
         if (!course) return res.status(404).json({ message: 'Course not found' });
@@ -88,7 +89,7 @@ exports.deleteCourse = async (req, res) => {
     }
 };
 
-exports.getAuditLogs = async (req, res) => {
+const getAuditLogs = async (req, res) => {
     try {
         const logs = await AuditLog.find().populate('user', 'name email');
         res.json(logs);
@@ -96,3 +97,5 @@ exports.getAuditLogs = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+module.exports = { getUsers, createDepartment, deleteUser, getCourses, assignLecturer, deleteCourse, getAuditLogs };
