@@ -97,5 +97,36 @@ const getAuditLogs = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+const createCourse = async (req, res) => {
+    const { name, code, year, department, lecturer } = req.body;
+    try {
+        const departmentExists = await Department.findById(department);
+        if (!departmentExists) {
+            return res.status(400).json({ message: 'Invalid department' });
+        }
+        if (lecturer) {
+            const lecturerExists = await User.findById(lecturer);
+            if (!lecturerExists || lecturerExists.role !== 'lecturer') {
+                return res.status(400).json({ message: 'Invalid lecturer' });
+            }
+        }
+        const course = new Course({
+            name,
+            code,
+            year,
+            department,
+            lecturer: lecturer || null
+        });
+        await course.save();
+        await AuditLog.create({
+            user: req.user.id,
+            action: 'CREATE_COURSE',
+            details: `Created course: ${name} (${code})`
+        });
+        res.status(201).json(course);
+    } catch (err) {
+        res.status(400).json({ message: 'Failed to create course', error: err.message });
+    }
+};
 
-module.exports = { getUsers, createDepartment, deleteUser, getCourses, assignLecturer, deleteCourse, getAuditLogs };
+module.exports = { getUsers, createCourse, createDepartment, deleteUser, getCourses, assignLecturer, deleteCourse, getAuditLogs };
