@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/auth');
 const lecturerRoutes = require('./routes/lecturer');
 const studentRoutes = require('./routes/student');
+const adminRoutes = require('./routes/admin'); // Added admin routes
 
 dotenv.config();
 const app = express();
@@ -35,6 +36,7 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use('/api/auth', authRoutes);
 app.use('/api/lecturer', lecturerRoutes);
 app.use('/api/student', studentRoutes);
+app.use('/api/admin', adminRoutes); // Added admin routes
 
 // Error handling middleware
 app.use((err, req, res, next) => {
