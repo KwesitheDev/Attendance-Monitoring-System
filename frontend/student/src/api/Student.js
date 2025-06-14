@@ -1,37 +1,37 @@
-import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-function Header() {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const navigate = useNavigate();
+const API_URL = 'https://attendance-monitoring-system-ct6t.onrender.com/api';
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        navigate('/login');
-    };
+export const login = async (email, password) => {
+    const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+    if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+    }
+    return response.data;
+};
 
-    return (
-        <header className="bg-blue-600 text-white p-4 shadow-md">
-            <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
-                <Link to="/dashboard" className="text-xl font-bold mb-2 sm:mb-0">
-                    Student Dashboard
-                </Link>
-                {user.name && (
-                    <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-                        <span className="text-sm">
-                            {user.name} | {user.department?.name || 'N/A'} | Year {user.year || 'N/A'}
-                        </span>
-                        <button
-                            onClick={handleLogout}
-                            className="bg-red-600 px-3 py-1 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600"
-                        >
-                            Logout
-                        </button>
-                    </div>
-                )}
-            </div>
-        </header>
+export const enrollCourse = async (courseCode, enrollmentKey) => {
+    const response = await axios.post(
+        `${API_URL}/student/enroll`,
+        { courseCode, enrollmentKey },
+        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
     );
-}
+    return response.data;
+};
 
-export default Header;
+export const markAttendance = async (sessionId, courseId) => {
+    const response = await axios.post(
+        `${API_URL}/student/attendance`,
+        { sessionId, courseId },
+        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+    );
+    return response.data;
+};
+
+export const getCourses = async () => {
+    const response = await axios.get(`${API_URL}/student/courses`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
+    return response.data;
+};
