@@ -30,7 +30,7 @@ const corsOptions = {
     origin: [
         'http://localhost:3000',
         'http://localhost:3001',
-        'https://attendance-admin.netlify.app',
+        'https://attendanceadmin.netlify.app',
         'https://attendance-student.netlify.app'
     ],
     credentials: true,
