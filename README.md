@@ -144,7 +144,7 @@ npm run build
 
 
 **Deployed at**:  
-- Admin/Lecturer: https://attendance-admin.netlify.app  
+- Admin/Lecturer: https://attendanceadmin.netlify.app  
 - Student: https://attendance-student.netlify.app
 
 ---
@@ -205,8 +205,10 @@ Test endpoints like:
 
 - **Backend**: Render  
 https://attendance-monitoring-system-ct6t.onrender.com
+
 - **Admin/Lecturer**: Netlify  
-https://attendance-admin.netlify.app
+https://attendanceadmin.netlify.app
+
 - **Student**: Netlify  
 https://attendance-student.netlify.app
 
