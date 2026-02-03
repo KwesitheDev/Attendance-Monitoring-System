@@ -4,8 +4,8 @@ const Card = ({ children, className = "", ...props }) => {
   return (
     <div
       className={`
-        bg-white p-6 rounded-lg 
-        shadow-md w-full max-w-sm
+        bg-white p-6 rounded-2xl 
+         w-full max-w-sm border border-violet-100
         ${className}
         `}
       {...props}
