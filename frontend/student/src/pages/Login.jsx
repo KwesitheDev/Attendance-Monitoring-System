@@ -13,6 +13,10 @@ function Login() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const fillDemoCredentials = () => {
+    setFormData({ email: "student@example.com", password: "student123" });
+    setError("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +37,7 @@ function Login() {
     
     "
     >
+      <div className="mt-10"></div>
       <Logo />
       <div className="my-6">
         <h1 className=" mb-4 text-center font-bold text-3xl">AttendanceMS</h1>
@@ -68,6 +73,19 @@ function Login() {
             Login
           </button>
         </form>
+      </Card>
+      <Card className="mt-8 mb-10">
+        <h1 className="text-lg">Quick Demo access</h1>
+        <p className=" text-gray-600 mt-3">
+          Click below to login with demo credentials
+        </p>
+        <button
+          type="button"
+          onClick={fillDemoCredentials}
+          className="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 p-2 rounded-md"
+        >
+          Use Demo Account
+        </button>
       </Card>
     </div>
   );
