@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { enrollCourse } from '../api/Student';
+import Input from '../components/Input';
 
 function EnrollCourse() {
     const [formData, setFormData] = useState({ courseCode: '', enrollmentKey: '' });
@@ -30,28 +31,22 @@ function EnrollCourse() {
             {error && <p className="text-red-500 mb-4">{error}</p>}
             {success && <p className="text-green-500 mb-4">{success}</p>}
             <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Course Code</label>
-                    <input
-                        type="text"
-                        name="courseCode"
-                        value={formData.courseCode}
-                        onChange={handleChange}
-                        className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Enrollment Key</label>
-                    <input
-                        type="text"
-                        name="enrollmentKey"
-                        value={formData.enrollmentKey}
-                        onChange={handleChange}
-                        className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        required
-                    />
-                </div>
+                <Input
+                    label="Course Code"
+                    type="text"
+                    name="courseCode"
+                    value={formData.courseCode}
+                    onChange={handleChange}
+                    required
+                />
+                <Input
+                    label="Enrollment Key"
+                    type="text"
+                    name="enrollmentKey"
+                    value={formData.enrollmentKey}
+                    onChange={handleChange}
+                    required
+                />
                 <button
                     type="submit"
                     className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
