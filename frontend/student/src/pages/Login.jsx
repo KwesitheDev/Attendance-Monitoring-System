@@ -68,7 +68,7 @@ function Login() {
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
           >
             Login
           </button>
@@ -82,9 +82,19 @@ function Login() {
         <button
           type="button"
           onClick={fillDemoCredentials}
-          className="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 p-2 rounded-md"
+          className="mt-4 w-full bg-white border border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors p-3 rounded-xl text-left group"
         >
-          Use Demo Account
+          <div className="flex items-center gap-4">
+            <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 bg-indigo-100 text-red-600 rounded-xl text-lg group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+              S
+            </div>
+            <div>
+              <div className="font-semibold text-gray-900">Student Access</div>
+              <div className="text-sm text-gray-500">
+                Mark Attendance and View Courses
+              </div>
+            </div>
+          </div>
         </button>
       </Card>
     </div>
