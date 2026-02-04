@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../api/Student";
 import Card from "../components/Card";
 import Input from "../components/Input";
+import Logo from "../components/Logo";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -28,10 +29,15 @@ function Login() {
       className="
     min-h-screen flex items-center 
     justify-center bg-gray-100
-    bg-gradient-to-r from-violet-50 to-white
+    bg-gradient-to-r from-violet-50 to-white flex-col
     
     "
     >
+      <Logo />
+      <div className="my-6">
+        <h1 className=" mb-4 text-center font-bold text-3xl">AttendanceMS</h1>
+        <p className="mb-4 text-center text-gray-500">Log Into Your Account</p>
+      </div>
       <Card>
         <h2 className="text-lg text-center font-semibold mb-4 text-gray-900">
           Student Sign In
