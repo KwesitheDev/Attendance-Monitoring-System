@@ -13,10 +13,7 @@ const Input = ({
   return (
     <div className={`input-group ${className}`}>
       {label && (
-        <label
-          className="block text-sm font-medium text-gray-700"
-          htmlFor={name}
-        >
+        <label className="block text- text-gray-900" htmlFor={name}>
           {label}
         </label>
       )}
