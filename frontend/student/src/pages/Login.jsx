@@ -24,9 +24,18 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div
+      className="
+    min-h-screen flex items-center 
+    justify-center bg-gray-100
+    bg-gradient-to-r from-violet-50 to-white
+    
+    "
+    >
       <Card>
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Student Login</h2>
+        <h2 className="text-lg text-center font-semibold mb-4 text-gray-900">
+          Student Sign In
+        </h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
