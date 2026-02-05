@@ -33,7 +33,7 @@ function Login() {
       className="
     min-h-screen flex items-center 
     justify-center bg-gray-100
-    bg-gradient-to-r from-violet-50 to-white flex-col
+    bg-gradient-to-r from-violet-50 to-white flex-col px-4 sm:px-8
     
     "
     >
