@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getCourses } from "../api/Student";
 import Card from "../components/Card";
+//TODO: Add complementary icons on cards and other places for better UI/UX
 
 function StudentDashboard() {
   const [courses, setCourses] = useState([]);
@@ -21,7 +22,7 @@ function StudentDashboard() {
   }, []);
 
   return (
-    <div className="container mx-auto p-6 ">
+    <div className="mx-auto p-6 max-w-7xl ">
       <Card className="bg-white p-10 rounded-lg w-full max-w-none flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ">
         <div>
           <h1
@@ -52,6 +53,37 @@ function StudentDashboard() {
         </Link>
       </Card>
 
+      <div
+        className="
+        grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-6
+      "
+      >
+        <Card>
+          <div>
+            <h2 className="text-lg text-gray-400 mb-4">Enrolled Courses</h2>
+            <p className="text-3xl font-bold">{courses.length}</p>
+            <p className="text-sm text-gray-500">This semester</p>
+          </div>
+          <div></div>
+        </Card>
+        <Card>
+          <div>
+            <h2 className="text-lg text-gray-400 mb-4">Attendance Rate</h2>
+            {/**TODO: replace with real user attendance rate from backend later. */}
+            <p className="text-3xl font-bold text-green-400">80%</p>
+            <p className="text-sm text-gray-500">This semester</p>
+          </div>
+          <div></div>
+        </Card>
+        <Card>
+          <div>
+            <h2 className="text-lg text-gray-400 mb-4">Enrolled Courses</h2>
+            <p className="text-3xl font-bold">{courses.length}</p>
+            <p className="text-sm text-gray-500">This semester</p>
+          </div>
+          <div></div>
+        </Card>
+      </div>
       <h2 className="text-3xl font-bold mb-6 text-gray-800">My Courses</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
