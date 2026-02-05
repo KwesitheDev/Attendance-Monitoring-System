@@ -43,7 +43,7 @@ function Login() {
         <h1 className=" mb-4 text-center font-bold text-3xl">AttendanceMS</h1>
         <p className="mb-4 text-center text-gray-500">Log Into Your Account</p>
       </div>
-      <Card>
+      <Card className="max-w-md mx-auto">
         <h2 className="text-lg text-center font-semibold mb-4 text-gray-900">
           Student Sign In
         </h2>
@@ -74,7 +74,7 @@ function Login() {
           </button>
         </form>
       </Card>
-      <Card className="mt-8 mb-10">
+      <Card className="mt-8 mb-10 max-w-md mx-auto">
         <h1 className="text-lg">Quick Demo access</h1>
         <p className=" text-gray-600 mt-3">
           Click below to login with demo credentials
