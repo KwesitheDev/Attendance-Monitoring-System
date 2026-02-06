@@ -12,9 +12,12 @@ function StudentDashboard() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const data = {
     current: 17,
-    total: 20,
+    total: 50,
   };
   const attendancePercentage = ((data.current / data.total) * 100).toFixed(1);
+
+  const percentageColor =
+    attendancePercentage > 70 ? "text-green-500" : "text-red-600";
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -98,11 +101,19 @@ function StudentDashboard() {
       <Card>
         <div>
           <h1 className="text-lg ">Overall Attendance</h1>
+          <p
+            className={`font-semibold text-right pb-2 ${percentageColor}`}
+          >{`${attendancePercentage} %`}</p>
           <ProgressBar current={data.current} total={data.total} />
         </div>
       </Card>
 
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">My Courses</h2>
+      <div className="flex items-center justify-between mb-4 mt-6 align-center">
+        <h2 className="text-xl font-semibold  text-gray-800">My Courses</h2>
+        <Link className="px-2 py-1 rounded-md hover:bg-gray-300 hover:cursor-default ">
+          View All
+        </Link>
+      </div>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <Link
