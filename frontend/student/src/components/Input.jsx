@@ -28,7 +28,7 @@ const Input = ({
           w-full py-2 px-3 border rounded-md 
           focus:outline-none focus:border-transparent
           focus:ring-2 focus:ring-blue-600 
-          border-none bg-gray-200 text-sm transition duration-300
+          border-none bg-gray-200 transition duration-300
           ${inputClassName}
           `}
       />
