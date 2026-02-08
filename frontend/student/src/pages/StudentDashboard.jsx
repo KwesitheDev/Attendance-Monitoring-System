@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { getCourses } from "../api/Student";
 import Card from "../components/Card";
 import ProgressBar from "../components/ProgressBar";
+import { IoBookOutline } from "react-icons/io5";
+import { IoIosTrendingUp } from "react-icons/io";
+import { MdAccessTime } from "react-icons/md";
 
 //TODO: Add complementary icons on cards and other places for better UI/UX
 
@@ -34,6 +37,7 @@ function StudentDashboard() {
   return (
     <div className="mx-auto p-6 max-w-7xl ">
       {/** Student Info Section && ENroll Button */}
+
       <Card className="bg-white p-10 rounded-lg w-full max-w-none flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ">
         <div>
           <h1
@@ -65,6 +69,7 @@ function StudentDashboard() {
       </Card>
 
       {/**Quick Info Section */}
+
       <div
         className="
         grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-6
@@ -72,24 +77,43 @@ function StudentDashboard() {
       >
         <Card>
           <div>
-            <h2 className="text-lg text-gray-400 mb-4">Enrolled Courses</h2>
+            <h2 className="text-gray-400 mb-4 flex justify-between items-center">
+              Enrolled Courses
+              <span>
+                <IoBookOutline className="text-xl -mb-1" />{" "}
+              </span>
+            </h2>
             <p className="text-3xl font-bold">{courses.length}</p>
             <p className="text-sm text-gray-500">This semester</p>
           </div>
           <div></div>
         </Card>
+
+        {/**Attendance Rate */}
         <Card>
           <div>
-            <h2 className="text-lg text-gray-400 mb-4">Attendance Rate</h2>
+            <h2 className=" text-gray-400 mb-4 flex justify-between items-center">
+              Attendance Rate
+              <span>
+                <IoIosTrendingUp className="text-xl -mb-1" />{" "}
+              </span>
+            </h2>
             {/**TODO: replace with real user attendance rate from backend later. */}
             <p className="text-3xl font-bold text-green-500">80%</p>
             <p className="text-sm text-gray-500">This semester</p>
           </div>
           <div></div>
         </Card>
+
+        {/**Next Class Card */}
         <Card>
           <div>
-            <h2 className="text-lg text-gray-400 mb-4">Next Class</h2>
+            <h2 className=" text-gray-400 mb-4 flex justify-between items-center">
+              Next Class
+              <span>
+                <MdAccessTime className="text-xl -mb-1" />
+              </span>
+            </h2>
             <p className="text-3xl font-bold">2:00 PM</p>
             <p className="text-sm text-gray-500">Calculus</p>
           </div>
@@ -98,6 +122,7 @@ function StudentDashboard() {
       </div>
 
       {/** Attendance Overview Card */}
+
       <Card>
         <div>
           <h1 className="text-lg ">Overall Attendance</h1>
@@ -107,6 +132,9 @@ function StudentDashboard() {
           <ProgressBar current={data.current} total={data.total} />
         </div>
       </Card>
+
+      {/** My Courses Section */}
+      <div></div>
 
       <div className="flex items-center justify-between mb-4 mt-6 align-center">
         <h2 className="text-xl font-semibold  text-gray-800">My Courses</h2>
