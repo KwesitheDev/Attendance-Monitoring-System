@@ -4,6 +4,7 @@ import { login } from "../api/Student";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Logo from "../components/Logo";
+import { CiLogin } from "react-icons/ci";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -38,7 +39,7 @@ function Login() {
     "
     >
       <div className="mt-10"></div>
-      <Logo />
+      <Logo className="rounded-2xl" />
       <div className="my-6">
         <h1 className=" mb-4 text-center font-bold text-3xl">AttendanceMS</h1>
         <p className="mb-4 text-center text-gray-500">Log Into Your Account</p>
@@ -68,9 +69,10 @@ function Login() {
           />
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
           >
-            Login
+            <CiLogin className="text-xl -mb-0.5 " />
+            <span>Sign In</span>
           </button>
         </form>
       </Card>
