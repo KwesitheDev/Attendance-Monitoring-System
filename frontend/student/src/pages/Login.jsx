@@ -85,7 +85,7 @@ function Login() {
           className="mt-4 w-full bg-white border border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors p-3 rounded-xl text-left group"
         >
           <div className="flex items-center gap-4">
-            <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 bg-indigo-100 text-red-600 rounded-xl text-lg group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+            <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 bg-indigo-100 text-green-600 rounded-xl text-lg group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
               S
             </div>
             <div>
