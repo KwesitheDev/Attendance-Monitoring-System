@@ -39,7 +39,7 @@ function Login() {
     "
     >
       <div className="mt-10"></div>
-      <Logo className="rounded-2xl" />
+      <Logo className="rounded-2xl px-8 py-6 text-2xl font-bold" />
       <div className="my-6">
         <h1 className=" mb-4 text-center font-bold text-3xl">AttendanceMS</h1>
         <p className="mb-4 text-center text-gray-500">Log Into Your Account</p>
