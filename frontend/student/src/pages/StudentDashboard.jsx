@@ -6,6 +6,7 @@ import ProgressBar from "../components/ProgressBar";
 import { IoBookOutline } from "react-icons/io5";
 import { IoIosTrendingUp } from "react-icons/io";
 import { MdAccessTime } from "react-icons/md";
+import { GoPlus } from "react-icons/go";
 
 //TODO: Add complementary icons on cards and other places for better UI/UX
 
@@ -56,14 +57,18 @@ function StudentDashboard() {
         </div>
         <Link
           to="/enroll"
-          className="bg-violet-500 text-white text-center
-    px-6 py-3
+          className="bg-indigo-700 text-white text-center
+    px-3 py-2
     rounded-md
-    font-medium
-    hover:bg-violet-600
-    focus:outline-none focus:ring-2 focus:ring-violet-400
-    whitespace-nowrap"
+    
+    hover:bg-indigo-600
+    focus:outline-none focus:ring-2 focus:ring-indigo-500
+    whitespace-nowrap flex items-center "
         >
+          <span className="">
+            <GoPlus className="text-xl -mb-1" />
+            {"  "}
+          </span>
           Enroll in Course
         </Link>
       </Card>
@@ -111,7 +116,7 @@ function StudentDashboard() {
             <h2 className=" text-gray-400 mb-4 flex justify-between items-center">
               Next Class
               <span>
-                <MdAccessTime className="text-xl -mb-1" />
+                <MdAccessTime className="text-xl -mt-1.5" />
               </span>
             </h2>
             <p className="text-3xl font-bold">2:00 PM</p>
