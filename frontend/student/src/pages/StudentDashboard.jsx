@@ -147,11 +147,24 @@ function StudentDashboard() {
           View All
         </Link>
       </div>
+
+      {/**Quick Actions  */}
+
+      <Card className="flex">
+        Quick actions
+        <div>
+          <div className="font-semibold text-gray-900">Student Access</div>
+          <div className="text-sm text-gray-500">
+            Mark Attendance and View Courses
+          </div>
+        </div>
+      </Card>
+
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <Link
           to="/scan"
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
         >
           Scan QR Code
         </Link>
