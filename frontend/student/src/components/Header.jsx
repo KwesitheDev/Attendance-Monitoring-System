@@ -15,8 +15,8 @@ function Header() {
     <header className=" p-4 shadow-md">
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
         <Link to="/dashboard" className="text-xl font-bold mb-2 sm:mb-0">
-          <div className="flex justify-center items-center gap-2">
-            <Logo className="px-1 text-lg py-0.5 font-semibold rounded-md" />
+          <div className="flex justify-center items-center gap-2 -ml-20">
+            <Logo className="px-3 py-1.5 text-lg  font-semibold " />
             AttendanceMS
           </div>
         </Link>
