@@ -3,7 +3,7 @@ import React from "react";
 const Logo = ({ className = "" }) => {
   return (
     <div
-      className={`text-3xl font-bold text-white bg-indigo-500 px-6 py-4 rounded-2xl ${className}`}
+      className={`inline-flex items-center justify-center font-bold text-white bg-indigo-500 rounded-xl ${className}`}
     >
       A
     </div>
