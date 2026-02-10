@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import { getCourses } from "../api/Student";
 import Card from "../components/Card";
 import ProgressBar from "../components/ProgressBar";
-import { IoBookOutline } from "react-icons/io5";
+import { IoBookOutline, IoCalendar } from "react-icons/io5";
 import { IoIosTrendingUp } from "react-icons/io";
 import { MdAccessTime } from "react-icons/md";
 import { GoPlus } from "react-icons/go";
+import { Calendar } from "lucide-react";
 
 //TODO: Add complementary icons on cards and other places for better UI/UX
 
@@ -150,25 +151,47 @@ function StudentDashboard() {
 
       {/**Quick Actions  */}
 
-      <Card className="flex">
-        Quick actions
-        <div>
-          <div className="font-semibold text-gray-900">Student Access</div>
-          <div className="text-sm text-gray-500">
-            Mark Attendance and View Courses
+      <Card className="flex flex-col gap-3">
+        <p className="font-medium text-lg">Quick actions</p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Action Card */}
+          <Link
+            to="/scan"
+            className="flex items-center gap-4 p-4 border border-indigo-100 rounded-md cursor-pointer hover:bg-indigo-50 transition-colors"
+          >
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-violet-100">
+              <Calendar className="text-indigo-500 text-2xl" />
+            </div>
+
+            <div>
+              <div className="font-semibold text-gray-900">Scan QR Code</div>
+              <div className="text-sm text-gray-500">
+                Mark attendance for today’s class
+              </div>
+            </div>
+          </Link>
+
+          {/* Action Card */}
+          <div className="flex items-center gap-4 p-4 border border-indigo-100 rounded-md cursor-pointer hover:bg-indigo-50 transition-colors">
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-violet-100">
+              <IoBookOutline className="text-indigo-500 text-2xl" />
+            </div>
+
+            <div>
+              <div className="font-semibold text-gray-900">
+                View All Courses
+              </div>
+              <div className="text-sm text-gray-500">
+                See detailed course information
+              </div>
+            </div>
           </div>
         </div>
       </Card>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <Link
-          to="/scan"
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-        >
-          Scan QR Code
-        </Link>
-      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map((course) => (
           <div
