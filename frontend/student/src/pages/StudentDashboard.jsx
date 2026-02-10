@@ -176,6 +176,8 @@ function StudentDashboard() {
       </Card>
 
       {/** My Courses Section */}
+      {/**TODO: Update backend and fill CourseCards with actual course details not dummyData */}
+      {error && <p className="text-red-500 mb-4">{error}</p>}
 
       <div className="pt-2 pb-1 flex items-center justify-between mb-4 mt-6 align-center">
         <h2 className="text-xl font-semibold  text-gray-800">My Courses</h2>
@@ -231,9 +233,7 @@ function StudentDashboard() {
         </div>
       </Card>
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/**<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map((course) => (
           <div
             key={course._id}
@@ -252,7 +252,7 @@ function StudentDashboard() {
             </p>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
