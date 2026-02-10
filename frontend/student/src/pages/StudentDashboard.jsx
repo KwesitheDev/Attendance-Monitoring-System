@@ -72,8 +72,22 @@ function StudentDashboard() {
     fetchCourses();
   }, []);
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   return (
     <div className="mx-auto p-6 max-w-7xl ">
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
+          <p className="text-red-600 font-medium">{error}</p>
+        </div>
+      )}
       {/** Student Info Section && ENroll Button */}
 
       <Card className="bg-white p-10 rounded-lg w-full max-w-none flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ">
@@ -177,7 +191,6 @@ function StudentDashboard() {
 
       {/** My Courses Section */}
       {/**TODO: Update backend and fill CourseCards with actual course details not dummyData */}
-      {error && <p className="text-red-500 mb-4">{error}</p>}
 
       <div className="pt-2 pb-1 flex items-center justify-between mb-4 mt-6 align-center">
         <h2 className="text-xl font-semibold  text-gray-800">My Courses</h2>
