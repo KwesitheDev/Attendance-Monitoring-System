@@ -8,6 +8,7 @@ import { IoIosTrendingUp } from "react-icons/io";
 import { MdAccessTime } from "react-icons/md";
 import { GoPlus } from "react-icons/go";
 import { Calendar } from "lucide-react";
+import CourseCard from "../components/CourseCard";
 
 //TODO: Add complementary icons on cards and other places for better UI/UX
 
@@ -15,6 +16,41 @@ function StudentDashboard() {
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState("");
   const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  //Dummy Course Data
+  const dummyCourses = [
+    {
+      id: 1,
+      code: "CSC 201",
+      name: "Data Structures",
+      lecturer: "Dr. John Doe",
+      department: "Computer Science",
+      attendancePercentage: 82,
+      attendedClasses: 23,
+      totalClasses: 28,
+    },
+    {
+      id: 2,
+      code: "MTH 203",
+      name: "Linear Algebra",
+      lecturer: "Prof. Jane Smith",
+      department: "Mathematics",
+      attendancePercentage: 75,
+      attendedClasses: 18,
+      totalClasses: 24,
+    },
+    {
+      id: 3,
+      code: "PHY 205",
+      name: "Electromagnetism",
+      lecturer: "Dr. Alex Brown",
+      department: "Physics",
+      attendancePercentage: 90,
+      attendedClasses: 27,
+      totalClasses: 30,
+    },
+  ];
+
   const data = {
     current: 17,
     total: 50,
@@ -140,13 +176,18 @@ function StudentDashboard() {
       </Card>
 
       {/** My Courses Section */}
-      <div></div>
 
-      <div className="flex items-center justify-between mb-4 mt-6 align-center">
+      <div className="pt-2 pb-1 flex items-center justify-between mb-4 mt-6 align-center">
         <h2 className="text-xl font-semibold  text-gray-800">My Courses</h2>
         <Link className="px-2 py-1 rounded-md hover:bg-gray-300 hover:cursor-default ">
           View All
         </Link>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+        {dummyCourses.map((course) => (
+          <CourseCard key={course.id} course={course} />
+        ))}
       </div>
 
       {/**Quick Actions  */}
