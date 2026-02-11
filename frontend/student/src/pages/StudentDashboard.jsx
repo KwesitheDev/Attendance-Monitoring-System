@@ -21,7 +21,7 @@ function StudentDashboard() {
   const dummyCourses = [
     {
       id: 1,
-      code: "CSC 201",
+      code: "CSC201",
       name: "Data Structures",
       lecturer: "Dr. John Doe",
       department: "Computer Science",
@@ -31,7 +31,7 @@ function StudentDashboard() {
     },
     {
       id: 2,
-      code: "MTH 203",
+      code: "MTH203",
       name: "Linear Algebra",
       lecturer: "Prof. Jane Smith",
       department: "Mathematics",
@@ -41,7 +41,7 @@ function StudentDashboard() {
     },
     {
       id: 3,
-      code: "PHY 205",
+      code: "PHY205",
       name: "Electromagnetism",
       lecturer: "Dr. Alex Brown",
       department: "Physics",
