@@ -7,7 +7,7 @@ const ProgressBar = ({ current, total, className = "", innerClass = "" }) => {
   return (
     <div className={`w-full bg-gray-200 rounded-full ${className} `}>
       <div
-        className={`bg-indigo-500 h-4 rounded-full ${innerClass} `}
+        className={`bg-indigo-500 rounded-full ${innerClass} `}
         style={{ width: `${percentage}%` }}
       ></div>
     </div>
