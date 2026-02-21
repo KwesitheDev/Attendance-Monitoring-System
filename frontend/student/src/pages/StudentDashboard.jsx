@@ -106,18 +106,19 @@ function StudentDashboard() {
         </div>
         <Link
           to="/enroll"
-          className="bg-indigo-700 text-white text-center
-    px-3 py-2
+          className="
+    w-full sm:w-auto
+    bg-indigo-700 text-white
+    px-4 py-2.5
     rounded-md
-    
+    flex items-center justify-center gap-2
+    font-medium
     hover:bg-indigo-600
     focus:outline-none focus:ring-2 focus:ring-indigo-500
-    whitespace-nowrap flex items-center "
+    transition duration-200
+  "
         >
-          <span className="">
-            <GoPlus className="text-xl -mb-1" />
-            {"  "}
-          </span>
+          <GoPlus className="text-lg" />
           Enroll in Course
         </Link>
       </Card>
