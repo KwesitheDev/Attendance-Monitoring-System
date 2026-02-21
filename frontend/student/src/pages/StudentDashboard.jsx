@@ -184,7 +184,12 @@ function StudentDashboard() {
           <p
             className={`font-semibold text-right pb-2 ${percentageColor}`}
           >{`${attendancePercentage} %`}</p>
-          <ProgressBar current={data.current} total={data.total} />
+          <ProgressBar
+            className="h-4"
+            innerClass="h-4"
+            current={data.current}
+            total={data.total}
+          />
         </div>
       </Card>
 
