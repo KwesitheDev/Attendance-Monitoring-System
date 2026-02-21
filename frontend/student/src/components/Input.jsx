@@ -8,12 +8,16 @@ const Input = ({
   value,
   className = "",
   inputClassName = "",
+  labelClassName = "",
   ...props
 }) => {
   return (
     <div className={`input-group ${className}`}>
       {label && (
-        <label className="block text- text-gray-900" htmlFor={name}>
+        <label
+          className={`block text-sm font-medium text-gray-900 ${labelClassName}`}
+          htmlFor={name}
+        >
           {label}
         </label>
       )}
