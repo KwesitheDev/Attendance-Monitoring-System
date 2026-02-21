@@ -10,8 +10,6 @@ import { GoPlus } from "react-icons/go";
 import { Calendar } from "lucide-react";
 import CourseCard from "../components/CourseCard";
 
-//TODO: Add complementary icons on cards and other places for better UI/UX
-
 function StudentDashboard() {
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState("");
