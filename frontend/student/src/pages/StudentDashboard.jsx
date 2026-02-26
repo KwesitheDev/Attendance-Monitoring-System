@@ -198,7 +198,10 @@ function StudentDashboard() {
 
       <div className="pt-2 pb-1 flex items-center justify-between mb-4 mt-6 align-center">
         <h2 className="text-xl font-semibold  text-gray-800">My Courses</h2>
-        <Link className="px-2 py-1 rounded-md hover:bg-gray-300 hover:cursor-default ">
+        <Link
+          to="/courses"
+          className="px-2 py-1 rounded-md hover:bg-gray-300 hover:cursor-default "
+        >
           View All
         </Link>
       </div>
@@ -238,14 +241,14 @@ function StudentDashboard() {
               <IoBookOutline className="text-indigo-500 text-2xl" />
             </div>
 
-            <div>
+            <Link to="/courses">
               <div className="font-semibold text-gray-900">
                 View All Courses
               </div>
               <div className="text-sm text-gray-500">
                 See detailed course information
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </Card>
