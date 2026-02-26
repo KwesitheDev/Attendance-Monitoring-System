@@ -1,38 +1,44 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
+import Logo from "./Logo";
+import { LuLogOut } from "react-icons/lu";
 
 function Header() {
-    const navigate = useNavigate();
-    const role = localStorage.getItem('role');
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
-        navigate('/login');
-    };
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
-    return (
-        <header className="bg-blue-600 text-white p-4 shadow-md">
-            <div className="container mx-auto flex justify-between items-center">
-                <h1 className="text-xl font-bold">Attendance System</h1>
-                <nav className="flex space-x-4">
-                    {role === 'admin' ? (
-                        <>
-                            <Link to="/admin/admin" className="hover:underline">Dashboard</Link>
-                            <Link to="/admin/users" className="hover:underline">Users</Link>
-                            <Link to="/admin/department" className="hover:underline">Departments</Link>
-                            <Link to="/admin/courses" className="hover:underline">Courses</Link>
-                            <Link to="/admin/attendance" className="hover:underline">Audit Logs</Link>
-                        </>
-                    ) : (
-                        <>
-                            <Link to="/dashboard" className="hover:underline">Dashboard</Link>
-                        </>
-                    )}
-                    <button onClick={handleLogout} className="hover:underline">Logout</button>
-                </nav>
-            </div>
-        </header>
-    );
+  return (
+    <header className=" p-4 shadow-md">
+      <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+        <Link to="/dashboard" className="text-xl font-bold mb-2 sm:mb-0">
+          <div className="flex justify-center items-center gap-2 -ml-4">
+            <Logo className="px-3 py-1.5 text-lg  font-semibold " />
+            AttendanceMS
+          </div>
+        </Link>
+        {user.name && (
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <span className="text-sm">
+              {user.name} | {user.department?.name || "N/A"} | Year{" "}
+              {user.year || "N/A"}
+            </span>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 border-indigo-400 transition-colors border px-2 py-1 rounded-md hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-600"
+            >
+              Sign Out
+              <LuLogOut className="text-lg" />
+            </button>
+          </div>
+        )}
+      </div>
+    </header>
+  );
 }
 
 export default Header;
