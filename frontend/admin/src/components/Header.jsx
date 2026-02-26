@@ -24,8 +24,7 @@ function Header() {
         {user.name && (
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
             <span className="text-sm">
-              {user.name} | {user.department?.name || "N/A"} | Year{" "}
-              {user.year || "N/A"}
+              {user.name} | {user.department?.name || "N/A"}
             </span>
             <button
               onClick={handleLogout}
