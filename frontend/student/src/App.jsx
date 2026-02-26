@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import StudentDashboard from "./pages/StudentDashboard";
 import EnrollCourse from "./pages/EnrollCourse";
 import ScanQR from "./pages/ScanQR";
+import Courses from "./pages/Courses";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -45,6 +46,14 @@ function Main() {
           }
         />
         <Route
+          path="/courses"
+          element={
+            <ProtectedRoute>
+              <Courses />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/scan"
           element={
             <ProtectedRoute>
@@ -52,6 +61,7 @@ function Main() {
             </ProtectedRoute>
           }
         />
+
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </div>
