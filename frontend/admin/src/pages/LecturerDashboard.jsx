@@ -3,12 +3,18 @@ import { Link } from "react-router-dom";
 import { getCourses } from "../api/Lecturer";
 import Card from "../components/Card";
 import lecturerData from "../data/lecturerData";
-import { LuBookOpen, LuUsers, LuCalendar } from "react-icons/lu";
+import {
+  LuBookOpen,
+  LuUsers,
+  LuCalendar,
+  LuQrCode,
+  LuKey,
+  LuEye,
+} from "react-icons/lu";
 
 function LecturerDashboard() {
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState("");
-  console.log(lecturerData.courses);
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -47,7 +53,7 @@ function LecturerDashboard() {
       <div className="grid gap-6 mb-6 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
         <Card>
           <div>
-            <h2 className="text-gray-400 mb-4 flex justify-between items-center">
+            <h2 className="text-gray-400 mb-4 flex text-sm justify-between items-center">
               Active Courses
               <span>
                 <LuBookOpen className=" -mt-0.5" />{" "}
@@ -59,7 +65,7 @@ function LecturerDashboard() {
         </Card>
         <Card>
           <div>
-            <h2 className="text-gray-400 mb-4 flex justify-between items-center">
+            <h2 className="text-gray-400 text-sm mb-4 flex justify-between items-center">
               Total Students
               <span>
                 <LuUsers className=" -mt-0.5" />{" "}
@@ -71,7 +77,7 @@ function LecturerDashboard() {
         </Card>
         <Card>
           <div>
-            <h2 className="text-gray-400 mb-4 flex justify-between items-center">
+            <h2 className="text-gray-400 text-sm mb-4 flex justify-between items-center">
               Sessions today
               <span>
                 <LuCalendar className=" -mt-0.5" />{" "}
@@ -84,8 +90,54 @@ function LecturerDashboard() {
           </div>
         </Card>
       </div>
+      {/*Courses Cards  */}
+      <div>
+        <Card className="p-4 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-1 border border-gray-400 rounded-full text-sm text-gray-500">
+                CS201
+              </span>
+
+              <span className="px-2 py-1 rounded-full text-sm text-green-800 bg-green-100">
+                Active
+              </span>
+            </div>
+
+            <p className="mt-2 text-gray-800">Introduction To Programming</p>
+            <div className="mt-4 text-sm flex gap-3 flex-col mb-4">
+              <div className="flex  justify-between">
+                <p className="text-gray-500">Department</p>
+                <p className="font-medium text-gray-800">Computer Science</p>
+              </div>
+              <div className="flex  justify-between">
+                <p className="text-gray-500">Students</p>
+                <p className="font-medium text-gray-800">120</p>
+              </div>
+              <div className="flex  justify-between">
+                <p className="text-gray-500">Sessions</p>
+                <p className="font-medium text-gray-800">24</p>
+              </div>
+            </div>
+            <div className="flex gap-2 w-full">
+              <button className="flex-1 border hover:bg-slate-100 hover:animate-pulse border-gray-400 rounded-md py-2 flex items-center justify-center">
+                <LuQrCode />
+              </button>
+              <button className="flex-1 border border-gray-400 hover:bg-slate-100 hover:animate-pulse rounded-md py-2 flex items-center justify-center">
+                <LuKey />
+              </button>
+              <button className="flex-1 border hover:bg-slate-100 hover:animate-pulse border-gray-400 rounded-md py-2 flex items-center justify-center">
+                <LuEye />
+              </button>
+            </div>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 }
+//TODO: fetch data from Backend to fill cards
+//TODO: move Course Cards to separate component and fetch dat from backend.
+//TODO:  AddCOurses functionality for lecturer's with Admin's approval
 
 export default LecturerDashboard;
