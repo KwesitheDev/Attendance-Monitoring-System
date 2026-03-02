@@ -30,6 +30,13 @@ function LecturerDashboard() {
     fetchCourses();
   }, []);
 
+  useEffect(() => {
+    error &&
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+  });
+
   const handleGenerateQR = (courseId) => {
     window.open(`/courses/${courseId}/qr`, "_blank");
   };
@@ -126,9 +133,12 @@ function LecturerDashboard() {
               <button className="flex-1 border border-gray-400 hover:bg-slate-100 hover:animate-pulse rounded-md py-2 flex items-center justify-center">
                 <LuKey />
               </button>
-              <button className="flex-1 border hover:bg-slate-100 hover:animate-pulse border-gray-400 rounded-md py-2 flex items-center justify-center">
+              <Link
+                className="flex-1 border border-gray-400 hover:bg-slate-100 hover:animate-pulse rounded-md py-2 flex items-center justify-center"
+                to="/courses/CourseDetails"
+              >
                 <LuEye />
-              </button>
+              </Link>
             </div>
           </div>
         </Card>
