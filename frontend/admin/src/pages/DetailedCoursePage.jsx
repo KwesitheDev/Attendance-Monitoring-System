@@ -31,7 +31,7 @@ const DetailedCoursePage = () => {
             <span className="text-gray-600">Computer Science</span>
           </div>
           <div>
-            <Link className="flex items-center  gap-2 border border-gray-300 p-2 rounded-md">
+            <Link className="flex items-center  gap-2 border border-gray-300 p-2 rounded-md focus:ring-2  focus:ring-indigo-600 transition-colors">
               <span>
                 <LuDownload className="hover:animate-pulse" />
               </span>
@@ -78,7 +78,7 @@ const DetailedCoursePage = () => {
         </div>
         <div className="flex-col flex gap-2 items-center mt-10">
           <span className="p-8">
-            <LuCalendar className="w-8 h-8 text-gray-500" />
+            <LuCalendar className="w-10 h-10 text-gray-500" />
           </span>
 
           <p className="text-lg">No attendance records</p>
