@@ -17,6 +17,7 @@ export const login = async (email, password) => {
       name: response.data.user.name,
       role: response.data.user.role,
       department: response.data.user.department,
+      year: response.data.user.year,
     };
 
     localStorage.setItem("user", JSON.stringify(safeUser));
