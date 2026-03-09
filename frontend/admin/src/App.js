@@ -46,7 +46,7 @@ function Main() {
           }
         />
         <Route
-          path="/courses/CourseDetails"
+          path="/courses/:courseId/details"
           element={
             <ProtectedRoute allowedRoles={["admin", "lecturer"]}>
               <DetailedCoursePage />
