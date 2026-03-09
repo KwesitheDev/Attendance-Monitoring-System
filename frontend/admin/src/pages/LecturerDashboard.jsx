@@ -1,18 +1,13 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { getCourses } from "../api/Lecturer";
-import Card from "../components/Card";
 import lecturerData from "../data/lecturerData";
-import {
-  LuBookOpen,
-  LuUsers,
-  LuCalendar,
-  LuQrCode,
-  LuKey,
-  LuEye,
-} from "react-icons/lu";
+import dummyCourses from "../data/courseData";
+import StatsCard from "../components/StatsCard";
+import CourseCard from "../components/CourseCard";
+import { LuBookOpen, LuUsers, LuCalendar } from "react-icons/lu";
 
 function LecturerDashboard() {
+  // courses will either come from backend or fall back to dummy data
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState("");
 
@@ -22,9 +17,15 @@ function LecturerDashboard() {
     const fetchCourses = async () => {
       try {
         const data = await getCourses();
-        setCourses(data);
+        if (Array.isArray(data) && data.length) {
+          setCourses(data);
+        } else {
+          // backend returned no courses, use dummy set
+          setCourses(dummyCourses);
+        }
       } catch (err) {
         setError("Failed to load courses");
+        setCourses(dummyCourses);
       }
     };
     fetchCourses();
@@ -36,10 +37,6 @@ function LecturerDashboard() {
         setError("");
       }, 5000);
   });
-
-  const handleGenerateQR = (courseId) => {
-    window.open(`/courses/${courseId}/qr`, "_blank");
-  };
 
   return (
     <div className="container mx-auto p-6">
@@ -58,90 +55,34 @@ function LecturerDashboard() {
       </div>
       {/*Quick Info Cards */}
       <div className="grid gap-6 mb-6 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
-        <Card>
-          <div>
-            <h2 className="text-gray-400 mb-4 flex text-sm justify-between items-center">
-              Active Courses
-              <span>
-                <LuBookOpen className=" -mt-0.5" />{" "}
-              </span>
-            </h2>
-            <p className="text-xl font-semibold">{lecturerData.courses}</p>
-            <p className="text-sm text-gray-500">Teaching this semester</p>
-          </div>
-        </Card>
-        <Card>
-          <div>
-            <h2 className="text-gray-400 text-sm mb-4 flex justify-between items-center">
-              Total Students
-              <span>
-                <LuUsers className=" -mt-0.5" />{" "}
-              </span>
-            </h2>
-            <p className="text-xl font-semibold">{lecturerData.students}</p>
-            <p className="text-sm text-gray-500">Across all courses</p>
-          </div>
-        </Card>
-        <Card>
-          <div>
-            <h2 className="text-gray-400 text-sm mb-4 flex justify-between items-center">
-              Sessions today
-              <span>
-                <LuCalendar className=" -mt-0.5" />{" "}
-              </span>
-            </h2>
-            <p className="text-xl font-semibold">
-              {lecturerData.sessionsToday}
-            </p>
-            <p className="text-sm text-gray-500">Scheduled for today</p>
-          </div>
-        </Card>
+        <StatsCard
+          title="Active Courses"
+          icon={LuBookOpen}
+          value={courses.length || lecturerData.courses}
+          subtitle="Teaching this semester"
+        />
+        <StatsCard
+          title="Total Students"
+          icon={LuUsers}
+          value={
+            courses.length
+              ? courses.reduce((sum, c) => sum + (c.students || 0), 0)
+              : lecturerData.students
+          }
+          subtitle="Across all courses"
+        />
+        <StatsCard
+          title="Sessions today"
+          icon={LuCalendar}
+          value={lecturerData.sessionsToday}
+          subtitle="Scheduled for today"
+        />
       </div>
       {/*Courses Cards  */}
-      <div>
-        <Card className="p-4 flex flex-col justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-1 border border-gray-400 rounded-full text-sm text-gray-500">
-                CS201
-              </span>
-
-              <span className="px-2 py-1 rounded-full text-sm text-green-800 bg-green-100">
-                Active
-              </span>
-            </div>
-
-            <p className="mt-2 text-gray-800">Introduction To Programming</p>
-            <div className="mt-4 text-sm flex gap-3 flex-col mb-4">
-              <div className="flex  justify-between">
-                <p className="text-gray-500">Department</p>
-                <p className="font-medium text-gray-800">Computer Science</p>
-              </div>
-              <div className="flex  justify-between">
-                <p className="text-gray-500">Students</p>
-                <p className="font-medium text-gray-800">120</p>
-              </div>
-              <div className="flex  justify-between">
-                <p className="text-gray-500">Sessions</p>
-                <p className="font-medium text-gray-800">24</p>
-              </div>
-            </div>
-            <div className="flex gap-2 w-full">
-              <button className="flex-1 border hover:bg-slate-100 hover:animate-pulse border-gray-400 rounded-md py-2 flex items-center justify-center">
-                <LuQrCode />
-              </button>
-              <button className="flex-1 border border-gray-400 hover:bg-slate-100 hover:animate-pulse rounded-md py-2 flex items-center justify-center">
-                <LuKey />
-              </button>
-              <Link
-                className="flex-1 border border-gray-400 hover:bg-slate-100 hover:animate-pulse rounded-md py-2 flex items-center justify-center"
-                to="/courses/CourseDetails"
-              >
-                <LuEye />
-              </Link>
-            </div>
-          </div>
-        </Card>
+      <div className="grid gap-6 grid-cols-2">
+        {courses.map((course) => (
+          <CourseCard key={course._id || course.code} course={course} />
+        ))}
       </div>
     </div>
   );
