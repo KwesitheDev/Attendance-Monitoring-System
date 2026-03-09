@@ -1,10 +1,54 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../components/Card";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { LuDownload, LuFilter, LuArrowLeft, LuCalendar } from "react-icons/lu";
+import { getCourses } from "../api/Lecturer";
+import dummyCourses from "../data/courseData";
 
 const DetailedCoursePage = () => {
   const navigate = useNavigate();
+  const { courseId } = useParams();
+  const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const data = await getCourses();
+        let found = null;
+        if (Array.isArray(data)) {
+          found = data.find((c) => c._id === courseId || c.code === courseId);
+        }
+        if (!found) {
+          // fallback to dummy, try to match by id or just take first
+          found =
+            dummyCourses.find((c) => c._id === courseId) || dummyCourses[0];
+        }
+        setCourse(found);
+      } catch (err) {
+        // network error or server down, use dummy data
+        const found =
+          dummyCourses.find((c) => c._id === courseId) || dummyCourses[0];
+        setCourse(found);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetch();
+  }, [courseId]);
+
+  // derived display values from course object
+  const {
+    code = "",
+    name = "",
+    department = "",
+    status = "",
+    students = 0,
+    sessions = 0,
+    attendanceRate = "-",
+    sessionsHeld = "-",
+  } = course || {};
+
   return (
     <div className="container mx-auto p-6 flex flex-col gap-6">
       <div
@@ -14,21 +58,28 @@ const DetailedCoursePage = () => {
         <LuArrowLeft className="text-lg" />
         <span className="font-medium">Back</span>
       </div>
+
       <Card className="p-8">
         <div className="flex items-center gap-2">
           <span className="px-2 py-1 border border-gray-400 rounded-full text-sm text-gray-500">
-            CS201
+            {code}
           </span>
 
-          <span className="px-2 py-1 rounded-full text-sm text-green-800 bg-green-100">
-            Active
+          <span
+            className={`px-2 py-1 rounded-full text-sm ${
+              status.toLowerCase() === "active"
+                ? "text-green-800 bg-green-100"
+                : "text-gray-500 bg-gray-100"
+            }`}
+          >
+            {status}
           </span>
         </div>
 
         <div className="flex justify-between">
           <div className="flex flex-col mt-2 mb-4 ">
-            <span className="font-medium mb-1">Database System</span>
-            <span className="text-gray-600">Computer Science</span>
+            <span className="font-medium mb-1">{name}</span>
+            <span className="text-gray-600">{department}</span>
           </div>
           <div>
             <Link className="flex items-center  gap-2 border border-gray-300 p-2 rounded-md focus:ring-2  focus:ring-indigo-600 transition-colors">
@@ -43,20 +94,22 @@ const DetailedCoursePage = () => {
         <div className="flex gap-40">
           <div className="flex flex-col">
             <span className="text-gray-500 text-sm">Total Session</span>
-            <span className="font-semibold text-2xl">24</span>
+            <span className="font-semibold text-2xl">{sessions}</span>
           </div>
           <div className="flex flex-col">
             <span className="text-gray-500 text-sm">Enrolled Students</span>
-            <span className="font-semibold text-2xl">40</span>
+            <span className="font-semibold text-2xl">{students}</span>
           </div>
 
           <div className="flex flex-col">
             <span className="text-gray-500 text-sm">Attendance Rate</span>
-            <span className="font-semibold text-2xl text-green-500">80%</span>
+            <span className="font-semibold text-2xl text-green-500">
+              {attendanceRate}
+            </span>
           </div>
           <div className="flex flex-col">
             <span className="text-gray-500 text-sm"> Sessions Held</span>
-            <span className="font-semibold text-2xl">18</span>
+            <span className="font-semibold text-2xl">{sessionsHeld}</span>
           </div>
         </div>
       </Card>
