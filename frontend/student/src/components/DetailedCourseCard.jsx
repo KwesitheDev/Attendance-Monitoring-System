@@ -5,7 +5,7 @@ import { LuUser, LuTrendingUp, LuCalendar, LuBookOpen } from "react-icons/lu";
 const DetailedCourseCard = ({ course }) => {
   if (!course) return null;
 
-  const percentage = course.attendancePercentage;
+  const percentage = course.attendancePercentage || 0;
 
   const getStatus = () => {
     if (percentage >= 75)
@@ -16,6 +16,12 @@ const DetailedCourseCard = ({ course }) => {
   };
 
   const status = getStatus();
+  const lecturerName =
+    typeof course.lecturer === "string"
+      ? course.lecturer
+      : course.lecturer?.name || "";
+  const missedClasses =
+    (course.totalClasses || 0) - (course.attendedClasses || 0);
 
   return (
     <Card className="p-8 space-y-6">
@@ -44,22 +50,6 @@ const DetailedCourseCard = ({ course }) => {
         >
           {status.label}
         </span>
-      </div>
-
-      {/* Schedule */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-md">
-        <div>
-          <p className="text-sm text-gray-500">Days</p>
-          <p className="font-medium">{course.schedule.days.join(", ")}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-500">Time</p>
-          <p className="font-medium">{course.schedule.time}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-500">Venue</p>
-          <p className="font-medium">{course.schedule.venue}</p>
-        </div>
       </div>
 
       {/* Attendance + Statistics */}
