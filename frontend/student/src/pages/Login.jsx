@@ -15,7 +15,10 @@ function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const fillDemoCredentials = () => {
-    setFormData({ email: "student@example.com", password: "student123" });
+    setFormData({
+      email: "alice.williams@example.com",
+      password: "student123",
+    });
     setError("");
   };
 
