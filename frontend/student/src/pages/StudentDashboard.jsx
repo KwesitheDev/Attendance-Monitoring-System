@@ -15,39 +15,9 @@ function StudentDashboard() {
   const [error, setError] = useState("");
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-  //Dummy Course Data
-  const dummyCourses = [
-    {
-      id: 1,
-      code: "CSC201",
-      name: "Data Structures",
-      lecturer: "Dr. John Doe",
-      department: "Computer Science",
-      attendancePercentage: 82,
-      attendedClasses: 23,
-      totalClasses: 28,
-    },
-    {
-      id: 2,
-      code: "MTH203",
-      name: "Linear Algebra",
-      lecturer: "Prof. Jane Smith",
-      department: "Mathematics",
-      attendancePercentage: 75,
-      attendedClasses: 18,
-      totalClasses: 24,
-    },
-    {
-      id: 3,
-      code: "PHY205",
-      name: "Electromagnetism",
-      lecturer: "Dr. Alex Brown",
-      department: "Physics",
-      attendancePercentage: 90,
-      attendedClasses: 27,
-      totalClasses: 30,
-    },
-  ];
+  // course list is fetched from backend via getCourses
+  // object structure: { id, code, name, lecturer, department, attendancePercentage, attendedClasses, totalClasses }
+  const dummyCourses = []; // kept in case UI expects variable but should no longer be used
 
   const data = {
     current: 17,
@@ -193,9 +163,7 @@ function StudentDashboard() {
         </div>
       </Card>
 
-      {/** My Courses Section */}
-      {/**TODO: Update backend and fill CourseCards with actual course details not dummyData */}
-
+      {/* My Courses Section */}
       <div className="pt-2 pb-1 flex items-center justify-between mb-4 mt-6 align-center">
         <h2 className="text-xl font-semibold  text-gray-800">My Courses</h2>
         <Link
@@ -207,9 +175,15 @@ function StudentDashboard() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-        {dummyCourses.map((course) => (
-          <CourseCard key={course.id} course={course} />
-        ))}
+        {courses.length > 0 ? (
+          courses.map((course) => (
+            <CourseCard key={course.id} course={course} />
+          ))
+        ) : (
+          <p className="text-gray-500">
+            You are not enrolled in any courses yet.
+          </p>
+        )}
       </div>
 
       {/**Quick Actions  */}
