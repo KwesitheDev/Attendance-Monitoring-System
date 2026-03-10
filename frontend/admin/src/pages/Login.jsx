@@ -1,65 +1,196 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../api/Auth';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../api/Auth";
+import Card from "../components/Card";
+import Input from "../components/Input";
+import Logo from "../components/Logo";
+import { CiLogin } from "react-icons/ci";
 
 function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const { token, user } = await login({ email, password });
-            localStorage.setItem('token', token);
-            localStorage.setItem('role', user.role);
-            if (user.role === 'admin') {
-                navigate('/admin/admin');
-            } else if (user.role === 'lecturer') {
-                navigate('/dashboard');
-            }
-        } catch (err) {
-            setError('Invalid credentials');
-        }
-    };
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-    return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-                {error && <p className="text-red-500 mb-4">{error}</p>}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium">Email</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full p-2 border rounded-md"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium">Password</label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full p-2 border rounded-md"
-                            required
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
-                    >
-                        Login
-                    </button>
-                </form>
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const fillLecturerCredentials = () => {
+    setFormData({
+      email: "john.doe@example.com",
+      password: "lecturer123",
+    });
+    setError("");
+  };
+
+  const fillAdminCredentials = () => {
+    setFormData({
+      email: "admin@example.com",
+      password: "admin123",
+    });
+    setError("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { token, user } = await login({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", user.role);
+
+      if (user.role === "admin") {
+        navigate("/admin/admin");
+      } else if (user.role === "lecturer") {
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      setError("Invalid email or password");
+    }
+  };
+
+  return (
+    <div
+      className="
+      min-h-screen flex items-center
+      justify-center bg-gray-100
+      bg-gradient-to-r from-violet-50 to-white
+      flex-col px-4 sm:px-8
+      "
+    >
+      <div className="mt-10"></div>
+
+      <Logo className="rounded-2xl px-8 py-6 text-2xl font-bold" />
+
+      <div className="my-6">
+        <h1 className="mb-4 text-center font-bold text-3xl">AttendanceMS</h1>
+        <p className="mb-4 text-center text-gray-500">Log Into Your Account</p>
+      </div>
+
+      {/* Login Card */}
+      <Card className="max-w-md mx-auto">
+        <h2 className="text-lg text-center font-semibold mb-4 text-gray-900">
+          Admin / Lecturer Sign In
+        </h2>
+
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <Input
+            label="Email"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="your.mail@university.edu"
+            required
+          />
+
+          <Input
+            label="Password"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+
+          <button
+            type="submit"
+            className="
+            w-full flex items-center justify-center gap-2
+            bg-indigo-600 text-white p-2 rounded-md
+            hover:bg-indigo-700
+            focus:outline-none focus:ring-2 focus:ring-indigo-600
+            "
+          >
+            <CiLogin className="text-xl -mb-0.5" />
+            <span>Sign In</span>
+          </button>
+        </form>
+      </Card>
+
+      {/* Quick Demo Access */}
+      <Card className="mt-8 mb-10 max-w-md mx-auto">
+        <h1 className="text-lg font-semibold">Quick Demo Access</h1>
+
+        <p className="text-gray-600 mt-2">
+          Click below to login with demo credentials
+        </p>
+
+        {/* Lecturer Card */}
+        <button
+          type="button"
+          onClick={fillLecturerCredentials}
+          className="
+          mt-4 w-full bg-white border border-gray-200
+          hover:border-indigo-300 hover:bg-indigo-50
+          transition-colors p-3 rounded-xl text-left group
+          "
+        >
+          <div className="flex items-center gap-4">
+            <div
+              className="
+              flex-shrink-0 flex items-center justify-center
+              w-11 h-11 bg-indigo-100 text-indigo-600
+              rounded-xl text-lg
+              "
+            >
+              L
             </div>
-        </div>
-    );
+
+            <div>
+              <div className="font-semibold text-gray-900">Lecturer Access</div>
+              <div className="text-sm text-gray-500">
+                Manage Courses and Attendance
+              </div>
+            </div>
+          </div>
+        </button>
+
+        {/* Admin Card */}
+        <button
+          type="button"
+          onClick={fillAdminCredentials}
+          className="
+          mt-4 w-full bg-white border border-gray-200
+          hover:border-indigo-300 hover:bg-indigo-50
+          transition-colors p-3 rounded-xl text-left group
+          "
+        >
+          <div className="flex items-center gap-4">
+            <div
+              className="
+              flex-shrink-0 flex items-center justify-center
+              w-11 h-11 bg-indigo-100 text-indigo-600
+              rounded-xl text-lg
+              "
+            >
+              A
+            </div>
+
+            <div>
+              <div className="font-semibold text-gray-900">Admin Access</div>
+              <div className="text-sm text-gray-500">
+                Manage Users and System Settings
+              </div>
+            </div>
+          </div>
+        </button>
+      </Card>
+    </div>
+  );
 }
 
 export default Login;
