@@ -3,7 +3,6 @@ import Card from "../components/Card";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { LuDownload, LuFilter, LuArrowLeft, LuCalendar } from "react-icons/lu";
 import { getCourses } from "../api/Lecturer";
-import dummyCourses from "../data/courseData";
 
 const DetailedCoursePage = () => {
   const navigate = useNavigate();
@@ -19,17 +18,13 @@ const DetailedCoursePage = () => {
         if (Array.isArray(data)) {
           found = data.find((c) => c._id === courseId || c.code === courseId);
         }
-        if (!found) {
-          // fallback to dummy, try to match by id or just take first
-          found =
-            dummyCourses.find((c) => c._id === courseId) || dummyCourses[0];
+        if (found) {
+          setCourse(found);
+        } else {
+          setCourse(null);
         }
-        setCourse(found);
       } catch (err) {
-        // network error or server down, use dummy data
-        const found =
-          dummyCourses.find((c) => c._id === courseId) || dummyCourses[0];
-        setCourse(found);
+        setError("Failed to load course");
       } finally {
         setLoading(false);
       }

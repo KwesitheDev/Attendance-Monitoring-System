@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { getCourses } from "../api/Lecturer";
-import lecturerData from "../data/lecturerData";
-import dummyCourses from "../data/courseData";
 import StatsCard from "../components/StatsCard";
 import CourseCard from "../components/CourseCard";
 import { LuBookOpen, LuUsers, LuCalendar } from "react-icons/lu";
@@ -20,12 +18,11 @@ function LecturerDashboard() {
         if (Array.isArray(data) && data.length) {
           setCourses(data);
         } else {
-          // backend returned no courses, use dummy set
-          setCourses(dummyCourses);
+          setCourses([]);
         }
       } catch (err) {
         setError("Failed to load courses");
-        setCourses(dummyCourses);
+        setCourses([]);
       }
     };
     fetchCourses();
@@ -58,7 +55,7 @@ function LecturerDashboard() {
         <StatsCard
           title="Active Courses"
           icon={LuBookOpen}
-          value={courses.length || lecturerData.courses}
+          value={courses.length}
           subtitle="Teaching this semester"
         />
         <StatsCard
@@ -67,14 +64,14 @@ function LecturerDashboard() {
           value={
             courses.length
               ? courses.reduce((sum, c) => sum + (c.students || 0), 0)
-              : lecturerData.students
+              : 0
           }
           subtitle="Across all courses"
         />
         <StatsCard
           title="Sessions today"
           icon={LuCalendar}
-          value={lecturerData.sessionsToday}
+          value={0}
           subtitle="Scheduled for today"
         />
       </div>
