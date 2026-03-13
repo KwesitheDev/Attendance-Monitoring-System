@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/apiConfig";
 import QRCode from "qrcode.react";
 import { LuQrCode } from "react-icons/lu";
 
@@ -20,14 +20,7 @@ function GenerateQR() {
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
-        const res = await axios.get(
-          `https://attendance-monitoring-system-ct6t.onrender.com/api/lecturer/courses/${courseId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          },
-        );
+        const res = await api.get(`/lecturer/courses/${courseId}`);
 
         setCourse(res.data);
       } catch (err) {
