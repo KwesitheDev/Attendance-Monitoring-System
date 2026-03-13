@@ -21,8 +21,12 @@ mongoose
   .then(async () => {
     console.log("MongoDB connected for seeding");
     await seed();
+    process.exit(0);
   })
-  .catch((err) => console.log(err));
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1);
+  });
 
 const seed = async () => {
   try {
