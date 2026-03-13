@@ -1,223 +1,197 @@
 # Attendance Monitoring System
 
-## Overview
+## 🔍 Overview
 
-The Attendance Monitoring System is a web-based application designed to streamline course attendance in educational institutions. It supports three user roles:
-- **Admin**: Manages users, departments, and courses.
-- **Lecturer**: Generates QR codes for attendance and manages course enrollment.
-- **Student**: Enrolls in courses and scans QR codes to mark attendance.
+The **Attendance Monitoring System** is a full-stack web application that enables educational institutions to track attendance using QR codes.
 
----
+There are three user roles:
 
-## Technology Stack
-
-- **Backend**: Node.js, Express, MongoDB, Mongoose, JWT, bcryptjs, winston, express-async-handler
-- **Frontend**: React, Tailwind CSS, axios, react-router-dom, html5-qrcode (for students), qrcode.react (for admin/lecturer)
-- **Deployment**: Render (backend), Netlify (frontends)
+- **Admin**: Manages users, departments, courses, and audit logs.
+- **Lecturer**: Creates courses, generates QR codes for attendance sessions, and views course attendance.
+- **Student**: Enrolls in courses, scans QR codes to mark attendance, and views attendance history.
 
 ---
 
-## Project Structure
+## 🧩 Technology Stack
 
+- **Backend**: Node.js, Express, MongoDB, Mongoose, JWT, bcrypt, Winston
+- **Frontend**: React, Tailwind CSS, Axios, React Router
+- **QR Support**: `html5-qrcode` (student scanner), `qrcode.react` (admin/lecturer generator)
+
+---
+
+## 📁 Project Structure
+
+```
 Attendance-Monitoring-System/
-├── backend/
-│ ├── controllers/
-│ │ ├── auth.js
-│ │ ├── admin.js
-│ │ ├── lecturer.js
-│ │ └── student.js
-│ ├── middlewares/
-│ │ └── auth.js
-│ ├── models/
-│ │ ├── User.js
-│ │ ├── Course.js
-│ │ ├── Department.js
-│ │ ├── Session.js
-│ │ ├── Attendance.js
-│ │ └── AuditLog.js
-│ ├── routes/
-│ │ ├── auth.js
-│ │ ├── admin.js
-│ │ ├── lecturer.js
-│ │ └── student.js
-│ ├── seeders/
-│ │ └── seed.js
-│ ├── .env
-│ ├── package.json
-│ └── server.js
+├── backend/                     # API server
+│   ├── controllers/             # Business logic
+│   ├── middlewares/             # Auth, error handling
+│   ├── models/                  # Mongoose schemas
+│   ├── routes/                  # Express routes
+│   ├── seeders/                 # Seed script (seed.js)
+│   ├── server.js
+│   └── package.json
 ├── frontend/
-│ ├── admin/
-│ │ ├── src/
-│ │ │ ├── api/
-│ │ │ │ ├── apiConfig.js
-│ │ │ │ ├── Auth.js
-│ │ │ │ └── Lecturer.js
-│ │ │ ├── components/
-│ │ │ │ └── Header.jsx
-│ │ │ ├── pages/
-│ │ │ │ ├── Login.jsx
-│ │ │ │ ├── AdminDashboard.jsx
-│ │ │ │ ├── ManageUsers.jsx
-│ │ │ │ ├── ManageDepartments.jsx
-│ │ │ │ ├── ManageCourses.jsx
-│ │ │ │ ├── AuditLogs.jsx
-│ │ │ │ ├── LecturerDashboard.jsx
-│ │ │ │ ├── CreateCourse.jsx
-│ │ │ │ ├── GenerateQR.jsx
-│ │ │ │ ├── SetEnrollmentKey.jsx
-│ │ │ │ └── ViewAttendance.jsx
-│ │ │ ├── App.js
-│ │ │ ├── tailwind.css
-│ │ │ └── index.js
-│ │ ├── public/
-│ │ │ └── index.html
-│ │ ├── netlify.toml
-│ │ ├── package.json
-│ │ └── tailwind.config.js
-│ └── student/
-│ ├── src/
-│ │ ├── api/
-│ │ │ └── Student.js
-│ │ ├── components/
-│ │ │ └── Header.jsx
-│ │ ├── pages/
-│ │ │ ├── Login.jsx
-│ │ │ ├── StudentDashboard.jsx
-│ │ │ ├── EnrollCourse.jsx
-│ │ │ └── ScanQR.jsx
-│ │ ├── App.jsx
-│ │ ├── index.css
-│ │ └── index.js
-│ ├── .env
-│ ├── package.json
-│ └── tailwind.config.js
-
+│   ├── admin/                   # Admin + Lecturer UI (CRA)
+│   └── student/                 # Student UI (Vite)
+└── README.md
+```
 
 ---
 
-## Setup Instructions
+## 🚀 Getting Started (Local Development)
 
-### Backend
+### 1) Backend Setup
 
-1. Navigate to `backend/`:
-
-
-2. Install dependencies:
-
-3. Create .env:
-MONGO_URI=your_mongo_uri
-JWT_SECRET=your_jwt_secret
-PORT=5000
-
-4. Seed database:
-npm run seed
-
-
-5. Start server:
-node server.js
-
-
-**Deployed at**: https://attendance-monitoring-system-ct6t.onrender.com
-
----
-
-### Frontend (Admin/Lecturer, Student)
-
-For each frontend (admin/, student/):
-
-1. Navigate to the directory:
-
-cd frontend/<role>
-
-
-2. Install dependencies:
+```bash
+cd backend
 npm install
+```
 
+Create a `.env` file in `/backend`:
 
-3. Start development server:
+```env
+MONGO_URI=<your_mongo_uri>
+JWT_SECRET=<your_jwt_secret>
+PORT=5000
+```
+
+Seed the database (creates demo departments, users, courses, sessions, and attendance records):
+
+```bash
+npm run seed
+```
+
+Start the backend server:
+
+```bash
 npm start
+# or
+node server.js
+```
 
-
-4. Build for production:
-npm run build
-
-
-
-**Deployed at**:  
-- Admin/Lecturer: https://attendanceadmin.netlify.app  
-- Student: https://attendance-student.netlify.app
+✅ Default backend URL: `http://localhost:5000`
 
 ---
 
-## Features
+### 2) Frontend Setup (Admin + Student)
+
+Each frontend runs separately. Open two terminals (or adjust ports).
+
+#### Admin / Lecturer UI
+
+```bash
+cd frontend/admin
+npm install
+npm start
+```
+
+✅ Default URL: `http://localhost:3000`
+
+#### Student UI
+
+```bash
+cd frontend/student
+npm install
+npm start
+```
+
+✅ Default URL: `http://localhost:3000` (if port conflicts, run with `PORT=3001 npm start`)
+
+---
+
+## 🧠 Seed Accounts (Demo Credentials)
+
+| Role      | Email                   | Password    |
+|-----------|-------------------------|-------------|
+| Admin     | `admin@example.com`     | `admin123`  |
+| Lecturer  | `lecturer@example.com`  | `lecturer123` |
+| Student   | `student@example.com`   | `student123` |
+
+---
+
+## 🧭 API Endpoints (Key Routes)
+
+### Auth
+- `POST /api/auth/login` — Login (email + password)
+- `GET /api/auth/departments` — Fetch departments list
+
+### Admin (Requires `admin` role)
+- `GET /api/admin/users` — List users
+- `POST /api/admin/users` — Create user
+- `DELETE /api/admin/users/:id` — Delete user
+- `GET /api/admin/departments` — List departments
+- `POST /api/admin/departments` — Create department
+- `GET /api/admin/courses` — List courses
+- `POST /api/admin/courses` — Create course
+- `GET /api/admin/audit-logs` — Fetch audit logs
+
+### Lecturer (Requires `lecturer` role)
+- `GET /api/lecturer/courses` — List lecturer courses
+- `POST /api/lecturer/courses/:id/generate-qr` — Create attendance session and QR data
+- `GET /api/lecturer/courses/:id/attendance` — View attendance for a course
+
+### Student (Requires `student` role)
+- `GET /api/student/courses` — List enrolled courses + attendance stats
+- `POST /api/student/enroll` — Enroll in a course (courseCode + enrollmentKey)
+- `POST /api/student/attendance` — Mark attendance (QR scan)
+
+> All protected routes require an `Authorization: Bearer <token>` header.
+
+---
+
+## ✅ Features
 
 ### Admin
-- Manage users (list, search, sort, delete)
-- Manage departments (create, search)
-- Manage courses (create, assign lecturers, delete)
-- View audit logs
+- Create/manage users, departments, and courses
+- View audit logs and system activity
 
 ### Lecturer
-- List courses with aesthetic cards
-- Generate QR codes for attendance (new tab with course details)
-- Set enrollment keys
-- View attendance
+- Create and manage courses and sessions
+- Generate QR codes to capture attendance
+- View attendance stats and student participation
 
 ### Student
-- Enroll in courses with course code and enrollment key
+- Enroll in courses using course codes + keys
 - Scan QR codes to mark attendance
-- View enrolled courses
-- Header displays name, department, year
+- View list of enrolled courses and attendance %
 
 ---
 
-## Testing
+## 🧪 Running Tests & Common Development Tasks
 
-### Local
+### Local URLs
+- Backend: `http://localhost:5000`
+- Admin UI: `http://localhost:3000`
+- Student UI: `http://localhost:3000`
 
-- Backend: http://localhost:5000
-- Admin/Lecturer: http://localhost:3000
-- Student: http://localhost:3000
+### Useful commands
 
-### Use seed credentials:
-- Admin: `admin@example.com`, `admin123`
-- Lecturer: `lecturer@example.com`, `lecturer123`
-- Student: `student@example.com`, `student123`
+**Backend**
+- `npm run seed` — Reset seed data
+- `npm start` — Run backend API
 
----
+**Admin UI**
+- `npm start` — Run admin frontend
+- `npm run build` — Build for production
 
-### End-to-End:
-1. Admin creates course  
-2. Lecturer generates QR code  
-3. Student enrolls and scans QR
-
----
-
-### Postman:
-Test endpoints like:
-- `/api/auth/login`
-- `/api/student/enroll`
-- `/api/lecturer/qr-code`
+**Student UI**
+- `npm start` — Run student frontend
+- `npm run build` — Build for production
 
 ---
 
-## Deployment
+## 🛠️ Deployment
 
-- **Backend**: Render  
-https://attendance-monitoring-system-ct6t.onrender.com
-
-- **Admin/Lecturer**: Netlify  
-https://attendanceadmin.netlify.app
-
-- **Student**: Netlify  
-https://attendance-student.netlify.app
+- **Backend**: Render
+- **Admin / Lecturer UI**: Netlify
+- **Student UI**: Netlify
 
 ---
 
 ## Notes
 
-- Mobile-responsive UI with Tailwind CSS
-- JWT authentication with localStorage
-- QR scanning uses `html5-qrcode` (student)
-- QR generation uses `qrcode.react` (admin/lecturer)
-- Source map warnings in `html5-qrcode` are harmless and do not affect functionality
+- The app uses JWT stored in `localStorage` for session persistence.
+- Attendance percentages and session stats are computed server-side.
+- When testing with Postman, include a valid token in the Authorization header.
