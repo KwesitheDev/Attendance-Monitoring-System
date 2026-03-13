@@ -1,22 +1,32 @@
 import React from "react";
-import Card from "./Card";
 
-const StatsCard = ({ title, icon: Icon, value, subtitle }) => {
+const StatsCard = ({
+  title,
+  icon: Icon,
+  value,
+  subtitle,
+  color = "indigo",
+}) => {
+  const colorVariants = {
+    indigo: "bg-indigo-50 text-indigo-600 border-indigo-200",
+    blue: "bg-blue-50 text-blue-600 border-blue-200",
+    green: "bg-green-50 text-green-600 border-green-200",
+    purple: "bg-purple-50 text-purple-600 border-purple-200",
+  };
+
   return (
-    <Card>
-      <div>
-        <h2 className="text-gray-400 mb-4 flex text-sm justify-between items-center">
-          {title}
-          {Icon && (
-            <span>
-              <Icon className=" -mt-0.5" />
-            </span>
-          )}
-        </h2>
-        <p className="text-xl font-semibold">{value}</p>
-        {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+    <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+      <div className="flex items-start justify-between mb-4">
+        <h3 className="text-sm font-medium text-slate-600">{title}</h3>
+        {Icon && (
+          <div className={`p-1.5 rounded-lg border ${colorVariants[color]}`}>
+            <Icon size={16} className="-pt-8" />
+          </div>
+        )}
       </div>
-    </Card>
+      <p className="text-3xl font-bold text-slate-900 mb-1">{value}</p>
+      {subtitle && <p className="text-xs text-slate-500">{subtitle}</p>}
+    </div>
   );
 };
 
